@@ -49,6 +49,10 @@ class TasksController extends Controller
      // postでtasks/にアクセスされた場合の「新規登録処理」
     public function store(Request $request) //creteで入力されたデータは「$request」に入っている
     {
+        $this->validate($request, [
+            'content' => 'required|max:191',
+        ]); //required (カラッポでない) かつ max:191 を検証
+        
         $task =new Task;
         $task->content =$request->content; //creteで入力された内容を「$task」へ代入
         $task->save();
@@ -102,6 +106,10 @@ class TasksController extends Controller
      // putまたはpatchでtasks/idにアクセスされた場合の「更新処理」
     public function update(Request $request, $id)//editで入力されたデータは「$request」に入っている
     {
+        $this->validate($request, [
+            'content' => 'required|max:191',
+        ]); //required (カラッポでない) かつ max:191 を検証
+        
         $task = Task::find($id);//$idを探して$taskに代入
         $task->content =$request->content; //editで入力された内容を「$task」へ代入
         $task->save();
