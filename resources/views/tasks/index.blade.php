@@ -8,7 +8,7 @@
     <ul>
         @foreach($tasks as $task)<!--一つづつ取り出して表示する-->
           <li>{!! link_to_route('tasks.show', $task->id, ['id' => $task->id]) !!} <!--id表示と「show」へのリンク-->
-          : {{ $task->content }}</li>
+          : {{ $task->status }}>{{ $task->content }}</li>
         @endforeach
     </ul>
   @endif

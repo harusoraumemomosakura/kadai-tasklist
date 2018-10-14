@@ -6,6 +6,9 @@
   
   {!! Form::model($task, ['route' => 'tasks.store']) !!}<!--htmlentities 関数に通さないため「{{}}」にしていない-->
   
+    {!! Form::label('status', 'ステータス：') !!}
+    {!! Form::text('status') !!}
+    
     {!! Form::label('content', 'タスク：') !!}
     {!! Form::text('content') !!}
     
