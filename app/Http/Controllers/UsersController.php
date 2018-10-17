@@ -21,9 +21,15 @@ class UsersController extends Controller
     public function show($id)
     {
         $user = User::find($id);//$idを探して$userに代入
+        $tasks = $user->tasks()->orderBy('created_at', 'desc')->paginate(10);
 
-        return view('users.show', [
-            'user' => $user, //●●=>$▲▲・・・●●がビューファイルでの変数になる。
-        ]);
+        $data = [
+            'user' => $user,
+            'tasks' => $tasks,
+        ];
+
+        $data += $this->counts($user);
+
+        return view('users.show', $data);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Task;    // 追加
+use PhpParser\Node\Stmt\Return_;//追加
 
 class TasksController extends Controller
 {
@@ -16,12 +17,27 @@ class TasksController extends Controller
      // getでtasks/にアクセスされた場合の「一覧表示処理」
     public function index()
     {
-        $tasks = Task::all(); //全部表示
+        /*$tasks = Task::all(); //全部表示
         
         return view('tasks.index',[
             'tasks' => $tasks, //●●=>$▲▲・・・●●がビューファイルでの変数になる。
                                //「 $tasks = Task::all();」をビューファイルに渡している
-            ]);
+            ]);*/
+            
+        $data = [];
+        if (\Auth::check()) {
+            $user = \Auth::user();
+            $tasks = $user->tasks()->orderBy('created_at', 'desc')->paginate(10);
+
+            $data = [
+                'user' => $user,
+                'tasks' => $tasks,
+            ];
+            $data += $this->counts($user);
+            return view('welcome', $data);
+        } else {
+            return view('welcome');        
+        }
     }
 
     /**
@@ -57,7 +73,8 @@ class TasksController extends Controller
         $task =new Task;
         $task->status =$request->status; // 追加
         $task->content =$request->content; //creteで入力された内容を「$task」へ代入
-        $task->save();
+        $task->user_id = $request->user()->id; // 追加
+        $task->save();//保存
         
         return redirect('/'); //viewは作らずにindexへ戻る
     }
@@ -73,10 +90,13 @@ class TasksController extends Controller
     {
         $task = Task::find($id);//$idを探して$taskに代入
         
-        return view('tasks.show',[
+        if (\Auth::id() === $task->user_id) {
+            return view('tasks.show',[
             'task'=>$task, //●●=>$▲▲・・・●●がビューファイルでの変数になる。
                            //「  $task = Task::find($id);」をビューファイルに渡している
             ]);
+        }
+            return redirect('/');
     }
 
     /**
@@ -86,16 +106,17 @@ class TasksController extends Controller
      * @return \Illuminate\Http\Response
      */
      // getでtasks/id/editにアクセスされた場合の「更新画面表示処理」
-    public function edit($id)
+     public function edit($id)
     {
         $task = Task::find($id);//$idを探して$taskに代入
         
+         if (\Auth::id() === $task->user_id) {
         return view('tasks.edit',[
             'task'=>$task, //●●=>$▲▲・・・●●がビューファイルでの変数になる。
                            //「  $task = Task::find($id);」をビューファイルに渡している
             ]);
-        
-        
+         }
+         return redirect('/');
     }
 
     /**
@@ -114,11 +135,13 @@ class TasksController extends Controller
         ]); //required (カラッポでない) かつ max:191 を検証
         
         $task = Task::find($id);//$idを探して$taskに代入
+        if (\Auth::id() === $task->user_id) {
         $task->status =$request->status; // 追加
         $task->content =$request->content; //editで入力された内容を「$task」へ代入
-        $task->save();
-        
+        $task->save();//保存
         return redirect('/'); //viewは作らずにindexへ戻る
+        }
+        return redirect('/');
     }
 
     /**
@@ -131,8 +154,10 @@ class TasksController extends Controller
     public function destroy($id)
     {
         $task = Task::find($id);//$idを探して$taskに代入
-        $task->delete();
-        
-        return redirect('/'); //viewは作らずにindexへ戻る
+        if(\Auth::id() ===$task->user_id){
+        $task->delete();//削除
+        return redirect('/'); //viewは作らずにindexへ戻る    
+        }   
+        return redirect('/');//
     }
 }

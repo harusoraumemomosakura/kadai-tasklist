@@ -26,7 +26,10 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+    
+    public function tasks()//複数形
+    {
+        return $this->hasMany(Task::class);//User のインスタンスが自分の tasks を取得できる
+    }
 }
 
-//複数形
-//User のインスタンスが自分の messages を取得できる

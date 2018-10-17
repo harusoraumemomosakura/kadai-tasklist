@@ -11,9 +11,11 @@
 |
 */
 
-Route::get('/', function () {
+/*Route::get('/', function () {
     return view('welcome');
-});
+});*/
+
+Route::get('/', 'TasksController@index');
 
 // ユーザ登録
 Route::get('signup', 'Auth\RegisterController@showRegistrationForm')->name('signup.get');//views/auth/register.blade.phpを表示する
@@ -29,7 +31,8 @@ Route::get('logout', 'Auth\LoginController@logout')->name('logout.get');
 Route::group(['middleware' => ['auth']], function () { //ルーティングのグループを作成
               //['middleware' => ['auth']]ミドルウェアでこのグループに書かれたルーティングは必ずログイン認証を確認させる
     Route::resource('users', 'UsersController', ['only' => ['index', 'show']]); //['only' => ['index', 'show']]実装するアクションを絞り込む
-    //ログイン認証を必要とするルーティンググループ内に、 Task のルーティングを設定
+    //Route::resource('tasks', 'TasksController', ['only' => ['store', 'destroy']]);//ログイン認証を必要とするルーティンググループ内に、 Task のルーティングを設定
+    Route::resource('tasks', 'TasksController');
 });
 
 
