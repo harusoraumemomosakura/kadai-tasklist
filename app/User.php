@@ -14,7 +14,7 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $fillable = [
+    protected $fillable = [ //｢$fillable｣ は想定していないパラメータへのデータ代入を防ぎかつ、一気にデータを代入するために利用
         'name', 'email', 'password',
     ];
 
@@ -27,3 +27,6 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 }
+
+//複数形
+//User のインスタンスが自分の messages を取得できる

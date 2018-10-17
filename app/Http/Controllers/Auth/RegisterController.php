@@ -20,14 +20,14 @@ class RegisterController extends Controller
     |
     */
 
-    use RegistersUsers;
+    use RegistersUsers; 
 
     /**
      * Where to redirect users after registration.
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/'; //ログイン後のリダイレクト先はトップページに指定
 
     /**
      * Create a new controller instance.
@@ -45,11 +45,11 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
-    protected function validator(array $data)
+    protected function validator(array $data) //ユーザ登録の際のフォームデータのバリデーション
     {
         return Validator::make($data, [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'name' => 'required|string|max:191',
+            'email' => 'required|string|email|max:191|unique:users',
             'password' => 'required|string|min:6|confirmed',
         ]);
     }
@@ -62,10 +62,10 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        return User::create([ //create() を使って一気にデータを代入し、そのままユーザを作成する
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => bcrypt($data['password']),
+            'password' => bcrypt($data['password']), //｢bcrypt()｣で暗号化してから代入
         ]);
     }
 }
