@@ -15,9 +15,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/', 'TasksController@index');
+//Route::get('/', 'TasksController@index');
 
-Route::resource('tasks', 'TasksController');
+//Route::resource('tasks', 'TasksController');
 
 /* CRUD　　「Route::resource('tasks', 'TasksController');」が下記7点を示している
 Route::get('tasks/{id}', 'TasksController@show')->name('tasks.show');・・・タスクの個別詳細ページ表示
