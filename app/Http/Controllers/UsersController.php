@@ -13,7 +13,7 @@ class UsersController extends Controller
         //$users = User::all(); //全部表示
         $users = User::paginate(10);//ページネーション
 
-        return view('users.index', [
+        return view('tasks.index', [
             'users' => $users, //●●=>$▲▲・・・●●がビューファイルでの変数になる。
         ]);
     }
@@ -30,6 +30,6 @@ class UsersController extends Controller
 
         $data += $this->counts($user);
 
-        return view('users.show', $data);
+        return view('tasks.show', $data);
     }
 }
