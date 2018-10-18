@@ -3,15 +3,15 @@
 @section('content')
   @if (Auth::check())<!--現在の閲覧者がログイン中かどうかをチェック-->
   
-    <h1>メッセージ一覧</h1>
+    <h1>タスク一覧</h1>
       <h3 class="panel-title">{{ $user->name }}</h3>
 
       <table class="table table-striped"><!--テーブル表示-->
         <thead>
           <tr>
             <th>id</th>
-            <th>タイトル</th>
-            <th>メッセージ</th>
+            <th>ステータス</th>
+            <th>タスク</th>
           </tr>
         </thead>
         <tbody>          
@@ -24,7 +24,7 @@
           @endforeach
         </tbody>
     </table>
-    {!! link_to_route('tasks.create', '新規メッセージの投稿', 
+    {!! link_to_route('tasks.create', '新規タスクの投稿', 
     null, ['class' => 'btn btn-primary']) !!} <!--青ボタン(btn btn-defau)表示--> 
     
         <!--<?php $user = Auth::user(); ?><!--ログイン中のユーザを取得-->
